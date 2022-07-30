@@ -1,5 +1,8 @@
 import json
-from flask import Flask, jsonify, render_template, request, Response, redirect, url_for
+from flask import Flask, jsonify, render_template, request, Response, redirect, url_for, session
+from flask_session import Session
+from flask_login import LoginManager
+
 from connection import mydb
 import requests
 
@@ -7,15 +10,61 @@ mycursor = mydb.cursor()
 
 app = Flask(__name__)
 
+# Set the secret key to some random bytes. Keep this really secret!
+app.secret_key = b'627c3675253e20dc12ac5d3e217a1b6fe8c91f559fd335373fba7deaf6f09d41'
+
+# SESSION
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+# # LOGIN
+# login_manager = LoginManager()
+# login_manager.init_app(app)
+
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.get(user_id)
+
+
+@app.context_processor
+def inject_user():
+    return dict(session_context=session)
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("login")
+
+
+@app.route('/login', methods=["POST", "GET"])
+def login():
+    if request.method == 'POST':
+        name = request.form.get("email")
+        password = request.form.get("password")
+
+        # result = mycursor.fetchall()
+        
+        session["name"] = request.form.get("email")
+        session["user_level"] = 1
+        return redirect(url_for('index', session = session["name"]))
+    else:
+        return render_template("login.html")
+
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    if not session.get("name"):
+        return redirect(url_for('login'))
+    else:
+        return render_template("index.html")
 
 
 @app.route('/view_assignment', methods = ['POST','GET'])
 def view_assignments():
     # return redirect(url_for('success',name = user))
+    if not session.get("name"):
+        return redirect(url_for('login'))
     if request.method == "POST":
         assignment_id = request.form['assignment_id']
         contractor_id = request.form["contractor_id"]
@@ -28,7 +77,6 @@ def view_assignments():
         city = request.form["city" ]
         worker_assigned = request.form["worker_assigned"]
         status = request.form[ "status"]  
-
 
         create = {
                     "assignment_id" : assignment_id,
@@ -70,8 +118,10 @@ def view_assignments():
         return render_template("view_assignment.html", ans=ans)
 
 
-@app.route('/workers_list/<data>', methods=[ "GET"])
+@app.route('/workers_list/<data>', methods=[ "GET","POST"])
 def workers_list(data):
+    if not session.get("name"):
+        return redirect(url_for('login'))
     data = json.loads(data)
     data1 = []
     data1.append(data)
@@ -99,6 +149,3 @@ def workers_list(data):
 
 
 app.run(debug = True)
-
-
-# 5 13
