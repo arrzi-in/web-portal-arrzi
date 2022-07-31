@@ -2,7 +2,7 @@ import json
 from flask import Flask, jsonify, render_template, request, Response, redirect, url_for, session
 from flask_session import Session
 from flask_login import LoginManager
-
+from flask_bcrypt import Bcrypt
 from connection import mydb
 import requests
 
@@ -10,6 +10,7 @@ mycursor = mydb.cursor()
 
 app = Flask(__name__)
 
+bcrypt = Bcrypt(app)
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = b'627c3675253e20dc12ac5d3e217a1b6fe8c91f559fd335373fba7deaf6f09d41'
 
@@ -31,30 +32,53 @@ def inject_user():
     return dict(session_context=session)
 
 
+# @app.route('/register', methods=["POST", "GET"])
+# def register():
+#     if request.method == 'POST':
+#         email = request.form.get("email")
+#         password = request.form.get("password")
+#         name = request.form.get("name")
+#         phone_number = request.form.get("phone_number")
+#         pw_hash = bcrypt.generate_password_hash(password)
+#         sql =  "INSERT INTO `users`(`email`, `name`, `phone_number`, `user_level`, `password`) VALUES (%s, %s, %s, %s, %s)"
+#         val = (email,name,phone_number,1,pw_hash)
+#         mycursor.execute(sql, val)
+#         mydb.commit()   
+#         return redirect(url_for('login'))
+#     else:
+#         return render_template("register.html")
+
+
+@app.route('/login', methods=["POST", "GET"])
+def login():
+    if request.method == 'POST':
+        email = request.form.get("email")
+        password = request.form.get("password") # Shubham8@arrzi
+        sql =  f"select * from `users` where `email` = '{email}'"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+       
+        if bcrypt.check_password_hash(result[0][5], password)==True:
+            session["email"] = result[0][1]
+            session["name"] = result[0][2]
+            session["phone_number"] = result[0][3]
+            session["user_level"] = 1
+            return redirect(url_for('index', session = session))
+        else:
+            return redirect(url_for('login'))
+    else:
+        return render_template("login.html")
+
+
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("login")
 
 
-@app.route('/login', methods=["POST", "GET"])
-def login():
-    if request.method == 'POST':
-        name = request.form.get("email")
-        password = request.form.get("password")
-
-        # result = mycursor.fetchall()
-        
-        session["name"] = request.form.get("email")
-        session["user_level"] = 1
-        return redirect(url_for('index', session = session["name"]))
-    else:
-        return render_template("login.html")
-
-
 @app.route('/')
 def index():
-    if not session.get("name"):
+    if not session.get("email"):
         return redirect(url_for('login'))
     else:
         return render_template("index.html")
@@ -62,9 +86,9 @@ def index():
 
 @app.route('/view_assignment', methods = ['POST','GET'])
 def view_assignments():
-    # return redirect(url_for('success',name = user))
-    if not session.get("name"):
-        return redirect(url_for('login'))
+    # return redirect(url_for('success',email = user))
+    if not session.get("email") or session.get('user_level') != 1:
+        return redirect(url_for('logout'))
     if request.method == "POST":
         assignment_id = request.form['assignment_id']
         contractor_id = request.form["contractor_id"]
@@ -120,8 +144,8 @@ def view_assignments():
 
 @app.route('/workers_list/<data>', methods=[ "GET","POST"])
 def workers_list(data):
-    if not session.get("name"):
-        return redirect(url_for('login'))
+    if not session.get("email") or session.get('user_level') != 1:
+        return redirect(url_for('logout'))
     data = json.loads(data)
     data1 = []
     data1.append(data)
