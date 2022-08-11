@@ -1,3 +1,6 @@
+# add -> add new cities,skills,subskills for skills forms and pages
+
+
 import json
 from flask import Flask, jsonify, render_template, request, Response, redirect, url_for, session
 from flask_session import Session
@@ -168,8 +171,24 @@ def workers_list(data):
                     
         }
         fin_ans.append(ans)
-
     return render_template("worker_list.html", data=data1, data2 = fin_ans)
+
+@app.route('/assign_worker', methods=["POST"])
+def assign_worker():
+    if request.method == 'POST':
+        assignment_id = request.form.get("assignment_id")
+        worker_id = request.form.getlist("worker_id_check")
+        for i in range(len(worker_id)):
+            worker_id[i] = int(worker_id[i])
+        if len(worker_id) == 0:
+            return redirect(url_for('index'))
+        else:
+            for i in worker_id:
+                sql =  "INSERT INTO `assignment_status` (`assignment_id`,`worker_id`,`status`) VALUES('{assignment_id}', '{i}', 'accepted')"
+                return redirect(url_for('index'))
+        
+    else:
+        return redirect(url_for('logout'))
 
 
 app.run(debug = True)
