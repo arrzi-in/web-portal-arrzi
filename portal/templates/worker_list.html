@@ -4,9 +4,6 @@
   
 {% for i in data %}
     <div class="card text-center my-2">
-        <!-- <div class="card-header">
-        
-        </div> -->
         <div class="card-body">
             <h3>Assignment Deatils</h3>
             <table style="border : 1px solid black; width: 100%;">
@@ -61,14 +58,15 @@
                         <th>City</th>
                         <th>Full Name</th>
                         <th>Start Date</th>
-                        <th>Notification Token</th>
+                        <th style="width: 10%;">Notification Token</th>
                         <th>Skill</th>
                         <th>Checkbox</th>
                     </tr>
-                    <input type="text"  name = "assignment_id" value="{{data[0]['assignment_id']}}" style = "display: none;" readonly>{{data[0]['assignment_id']}}
                     
                     {% for j in data2 %}
                         <tr>
+                            <input type="text" id="exampleInputEmail1" name="assignment_id" value="{{data[0]['assignment_id']}}" style = "display: none;" readonly >
+                            <input type="text" id="exampleInputEmail1" name="worker_assigned" value="{{data[0]['worker_assigned']}}" style = "display: none;" readonly>
                             <td><input type="text" class="form-control" name = "worker_id" id="exampleInputEmail1"  value="{{j['worker_id']}}" style = "display: none;" readonly>{{j['worker_id']}}</td>
                             <td><input type="text" class="form-control" name = "contractor_id" id="exampleInputEmail1"  value="{{j['phone_number']}}" style = "display: none;" readonly>{{j['phone_number']}}</td>
                             <td><input type="text" class="form-control" name = "create_date" id="exampleInputEmail1"  value="{{j['aadhar_number']}}" style = "display: none;" readonly>{{j['aadhar_number']}}</td>
@@ -76,7 +74,7 @@
                             <td><input type="text" class="form-control" name = "end_date" id="exampleInputEmail1"  value="{{j['city']}}" style = "display: none;" readonly>{{j['city']}}</td>
                             <td><input type="text" class="form-control" name = "worker_needed" id="exampleInputEmail1"  value="{{j['full_name']}}" style = "display: none;" readonly>{{j['full_name']}}</td>
                             <td><input type="text" class="form-control" name = "wage" id="exampleInputEmail1"  value="{{j['start_date']}}" style = "display: none;" readonly>{{j['start_date']}}</td>
-                            <td><input type="text" class="form-control" name = "skill_needed" id="exampleInputEmail1"  value="{{j['notification_token']}}" style = "display: none;" readonly>{{j['notification_token']}}</td>
+                            <td style="width: 10%;"><input type="text" class="form-control" name = "skill_needed" id="exampleInputEmail1"  value="{{j['notification_token']}}" style = "display: none; width: 10%;" readonly>{{j['notification_token']}}</td>
                             <td><input type="text" class="form-control" name = "city" id="exampleInputEmail1"  value="{{j['skill']}}" style = "display: none;" readonly>{{j['skill']}}</td>
                             <td><input type="checkbox" id="exampleInputEmail1" name="worker_id_check" value="{{j['worker_id']}}"></td>
                         </tr>
