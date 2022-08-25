@@ -2,38 +2,46 @@
 {% block title %} Home Page {% endblock %}
 {% block content %}    
   
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 {% for i in data %}
-    <div class="card text-center my-2">
+    <div class="card text-center my-2 mb-5">
         <div class="card-body">
             <h3>Assignment Deatils</h3>
-            <table style="border : 1px solid black; width: 100%;">
-                <tr>
-                    <th>Assignment ID</th>
-                    <th>Contractor ID</th>
-                    <th>Create Date</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Workers Needed</th>
-                    <th>Wage</th>
-                    <th>Skill Needed</th>
-                    <th>City</th>
-                    <th>Worker Assigned</th>
-                    <th>Status</th>
-                </tr>
+            <table style="border : 1px solid black; width: 100%;" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Assignment ID</th>
+                        <th>Contractor ID</th>
+                        <th>Create Date</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Workers Needed</th>
+                        <th>Wage</th>
+                        <th>Skill Needed</th>
+                        <th>City</th>
+                        <th>Worker Assigned</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
                 
-                <tr>
-                    <td><input type="text" class="form-control" name = "assignment_id" id="exampleInputEmail1"  value="{{i['assignment_id']}}" style = "display: none;" readonly>{{i['assignment_id']}}</td>
-                    <td><input type="text" class="form-control" name = "contractor_id" id="exampleInputEmail1"  value="{{i['contractor_id']}}" style = "display: none;" readonly>{{i['contractor_id']}}</td>
-                    <td><input type="text" class="form-control" name = "create_date" id="exampleInputEmail1"  value="{{i['create_date']}}" style = "display: none;" readonly>{{i['create_date']}}</td>
-                    <td><input type="text" class="form-control" name = "start_date" id="exampleInputEmail1"  value="{{i['start_date']}}" style = "display: none;" readonly>{{i['start_date']}}</td>
-                    <td><input type="text" class="form-control" name = "end_date" id="exampleInputEmail1"  value="{{i['end_date']}}" style = "display: none;" readonly>{{i['end_date']}}</td>
-                    <td><input type="text" class="form-control" name = "worker_needed" id="exampleInputEmail1"  value="{{i['worker_needed']}}" style = "display: none;" readonly>{{i['worker_needed']}}</td>
-                    <td><input type="text" class="form-control" name = "wage" id="exampleInputEmail1"  value="{{i['wage']}}" style = "display: none;" readonly>{{i['wage']}}</td>
-                    <td><input type="text" class="form-control" name = "skill_needed" id="exampleInputEmail1"  value="{{i['skill_needed']}}" style = "display: none;" readonly>{{i['skill_needed']}}</td>
-                    <td><input type="text" class="form-control" name = "city" id="exampleInputEmail1"  value="{{i['city']}}" style = "display: none;" readonly>{{i['city']}}</td>
-                    <td><input type="text" class="form-control" name = "worker_assigned" id="exampleInputEmail1"  value="{{i['worker_assigned']}}" style = "display: none;" readonly>{{i['worker_assigned']}}</td>
-                    <td><input type="text" class="form-control" name = "status" id="exampleInputEmail1"  value="{{i['status']}}" style = "display: none;" readonly>{{i['status']}}</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td><input type="text" class="form-control" name = "assignment_id" id="exampleInputEmail1"  value="{{i['assignment_id']}}" style = "display: none;" readonly>{{i['assignment_id']}}</td>
+                        <td><input type="text" class="form-control" name = "contractor_id" id="exampleInputEmail1"  value="{{i['contractor_id']}}" style = "display: none;" readonly>{{i['contractor_id']}}</td>
+                        <td><input type="text" class="form-control" name = "create_date" id="exampleInputEmail1"  value="{{i['create_date']}}" style = "display: none;" readonly>{{i['create_date']}}</td>
+                        <td><input type="text" class="form-control" name = "start_date" id="exampleInputEmail1"  value="{{i['start_date']}}" style = "display: none;" readonly>{{i['start_date']}}</td>
+                        <td><input type="text" class="form-control" name = "end_date" id="exampleInputEmail1"  value="{{i['end_date']}}" style = "display: none;" readonly>{{i['end_date']}}</td>
+                        <td><input type="text" class="form-control" name = "worker_needed" id="exampleInputEmail1"  value="{{i['worker_needed']}}" style = "display: none;" readonly>{{i['worker_needed']}}</td>
+                        <td><input type="text" class="form-control" name = "wage" id="exampleInputEmail1"  value="{{i['wage']}}" style = "display: none;" readonly>{{i['wage']}}</td>
+                        <td><input type="text" class="form-control" name = "skill_needed" id="exampleInputEmail1"  value="{{i['skill_needed']}}" style = "display: none;" readonly>{{i['skill_needed']}}</td>
+                        <td><input type="text" class="form-control" name = "city" id="exampleInputEmail1"  value="{{i['city']}}" style = "display: none;" readonly>{{i['city']}}</td>
+                        <td><input type="text" class="form-control" name = "worker_assigned" id="exampleInputEmail1"  value="{{i['worker_assigned']}}" style = "display: none;" readonly>{{i['worker_assigned']}}</td>
+                        <td><input type="text" class="form-control" name = "status" id="exampleInputEmail1"  value="{{i['status']}}" style = "display: none;" readonly>{{i['status']}}</td>
+                    </tr>
+                </tbody>
+                
             </table>
 
         </div>
@@ -43,27 +51,31 @@
 {% endfor %}
 
 
-<div class="card text-center my-2">
-
-    <div class="card-body">
+<div class="container ">
+    
+    <div class="card-body mt-5 ">
+        <input class="form-control" id="myInput" type="text" placeholder="Search.." >
         <h3>Available Worker's List</h3>
         <form action="/assign_worker" method="POST">
             <div class="mb-3">
-                <table style="border : 1px solid black; width: 100%;">
-                    <tr>
-                        <th>Worker ID</th>
-                        <th>Phone Number</th>
-                        <th>Aadhar Number</th>
-                        <th>D.O.B</th>
-                        <th>City</th>
-                        <th>Full Name</th>
-                        <th>Start Date</th>
-                        <th style="width: 10%;">Notification Token</th>
-                        <th>Skill</th>
-                        <th>Checkbox</th>
-                    </tr>
+                <table style="border : 1px solid black; width: 100%;" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Worker ID</th>
+                            <th>Phone Number</th>
+                            <th>Aadhar Number</th>
+                            <th>D.O.B</th>
+                            <th>City</th>
+                            <th>Full Name</th>
+                            <th>Start Date</th>
+                            <th style="width: 50px !important;">Notification Token</th>
+                            <th>Skill</th>
+                            <th>Checkbox</th>
+                        </tr>
+                    </thead>
                     
-                    {% for j in data2 %}
+                    <tbody id = "myTable">
+                        {% for j in data2 %}
                         <tr>
                             <input type="text" id="exampleInputEmail1" name="assignment_id" value="{{data[0]['assignment_id']}}" style = "display: none;" readonly >
                             <input type="text" id="exampleInputEmail1" name="worker_assigned" value="{{data[0]['worker_assigned']}}" style = "display: none;" readonly>
@@ -74,11 +86,13 @@
                             <td><input type="text" class="form-control" name = "end_date" id="exampleInputEmail1"  value="{{j['city']}}" style = "display: none;" readonly>{{j['city']}}</td>
                             <td><input type="text" class="form-control" name = "worker_needed" id="exampleInputEmail1"  value="{{j['full_name']}}" style = "display: none;" readonly>{{j['full_name']}}</td>
                             <td><input type="text" class="form-control" name = "wage" id="exampleInputEmail1"  value="{{j['start_date']}}" style = "display: none;" readonly>{{j['start_date']}}</td>
-                            <td style="width: 10%;"><input type="text" class="form-control" name = "skill_needed" id="exampleInputEmail1"  value="{{j['notification_token']}}" style = "display: none; width: 10%;" readonly>{{j['notification_token']}}</td>
+                            <td style="width: 50px !important;"><input type="text" class="form-control" name = "skill_needed" id="exampleInputEmail1"  value="{{j['notification_token']}}" style = "display: none;" readonly>{{j['notification_token']}}</td>
                             <td><input type="text" class="form-control" name = "city" id="exampleInputEmail1"  value="{{j['skill']}}" style = "display: none;" readonly>{{j['skill']}}</td>
                             <td><input type="checkbox" id="exampleInputEmail1" name="worker_id_check" value="{{j['worker_id']}}"></td>
                         </tr>
-                    {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                    
 
                 </table>
             </div>
@@ -88,5 +102,16 @@
     </div>
 
 </div>
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
 
 {% endblock %}

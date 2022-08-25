@@ -24,7 +24,7 @@ def login():
         headers = {'Content-type': 'application/json', 'authToken':'282e23176845652581e80b39776ad09b8e59652b69106509053efd2f8c53d821'}
         response = requests.post(api_url, json=query, headers=headers)
         response = response.json()
-        # print("111111111111111111111111111",response)
+        print("111111111111111111111111111",response)
         
         if len(response['body']['records'])==0:
             flash('Not a Registered Email! Please contact Admin!', category='error')

@@ -1,4 +1,5 @@
 
+import re
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash
 import json
 import requests
@@ -33,15 +34,15 @@ def view_assignments():
     # make API call to get workers list
     api_url = "https://8m2febviee.execute-api.ap-south-1.amazonaws.com/Dev/flask"
 
-    query = {'query': f"select * from assignments where worker_assigned < worker_needed and status = 'active'"}
+    query = {'query': f"select assignments.assignment_id , contractors.full_name , assignments.create_date ,assignments.start_date , assignments.end_date , assignments.worker_needed ,assignments.wage ,assignments.skill_needed ,assignments.city ,assignments.worker_assigned , assignments.status from assignments INNER JOIN contractors ON assignments.contractor_id = contractors.contractor_id where assignments.worker_assigned < assignments.worker_needed and assignments.status = 'active'"}
     headers = {'Content-type': 'application/json', 'authToken':'282e23176845652581e80b39776ad09b8e59652b69106509053efd2f8c53d821'}
     response = requests.post(api_url, json=query, headers=headers)
     response = response.json()
-
+    print(response)
     for i in response['body']['records']:
         fin_ans = {
                     "assignment_id" : i[0]['longValue'],
-                    "contractor_id": i[1]['longValue'],
+                    "contractor_id": i[1]['stringValue'],
                     "create_date": i[2]['stringValue'],
                     "start_date": i[3]['stringValue'],
                     "end_date" : i[4]['stringValue'],
@@ -97,7 +98,7 @@ def workers_list():
         # make API call to get workers list
         api_url = "https://8m2febviee.execute-api.ap-south-1.amazonaws.com/Dev/flask"
         city = data1[0]['city']
-        query = {'query': f"select * from workers where city =  '{city}' "} # AND skill_needed = '"+ data1[0]['skill_needed'] +"'"
+        query = {'query': f"select workers.worker_id,workers.phone_number,workers.aadhar_number,workers.dob,workers.city,workers.full_name,workers.start_date,workers.notification_token,worker_skills.skill_name from workers inner join worker_skills on workers.skill = worker_skills.id where city =  '{city}' ORDER BY skill ASC"} # AND skill_needed = '"+ data1[0]['skill_needed'] +"'"
         headers = {'Content-type': 'application/json', 'authToken':'282e23176845652581e80b39776ad09b8e59652b69106509053efd2f8c53d821'}
         response = requests.post(api_url, json=query, headers=headers)
         response = response.json()
@@ -118,7 +119,7 @@ def workers_list():
                 "full_name": i[5]['stringValue'],
                 "start_date": i[6]['stringValue'],
                 "notification_token": i[7]['stringValue'],
-                "skill" : i[8]['longValue'],
+                "skill" : i[8]['stringValue'],
                         
             }
             fin_ans.append(ans)
